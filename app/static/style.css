@@ -1,0 +1,320 @@
+
+
+
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	letter-spacing: -.02em;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+	font-family: 'Roboto', sans-serif;
+}
+
+
+
+
+
+.bamnit-description {
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.chart-row {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+
+
+
+
+div.heading {
+	margin-bottom: 15px;
+	margin-top: 0px;
+}
+
+div.logo {
+	text-align: center;
+	margin-bottom: 40px;
+	margin-top: 30px;
+}
+
+div.logo img {
+	width: 400px;
+}
+
+h1.heading {
+	margin-top: 10px;
+}
+
+
+
+
+
+
+
+.navbar-default {
+	background-color: #165683;
+}
+
+.navbar-default .navbar-brand {
+	color: #FFF;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #FFF;
+}
+
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
+    color: #FFF;
+    background-color: transparent;
+}
+
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover {
+    color: #FFF;
+    background-color: transparent;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #DDD;
+}
+
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover {
+    background-color: #173e59;
+}
+
+.navbar-default a.logo {
+	line-height: 3.6em;
+	margin-right: 15px;
+}
+
+.navbar-default img.logo {
+	width: 128px;
+}
+
+@media (max-width: 767px) {
+	.navbar-default a.logo {
+		margin-left: 8px;
+	}
+}
+
+
+
+
+
+
+#notification {
+	margin-top: 20px;
+}
+
+#notification-email {
+	font-weight: bold;
+}
+
+#notification .second-row select{
+	height: 200px;
+}
+
+.btn-default:focus,
+.btn-default:hover {
+    color: #333;
+    background-color: #eaf3fa;
+    border-color: #aaa;
+}
+
+.btn-default:active:hover {
+	color: #FFF;
+	background-color: #0f4d7f;
+}
+
+.btn-default {
+	background-color: #ebf6ff;
+}
+
+.form-control {
+	box-shadow: inset 0px 1px 5px rgba(22, 86, 131, .15);
+}
+
+.form-control:focus {
+    border-color: #3980b3;
+    outline: 0;
+    -webkit-box-shadow: 2px 2px 8px rgba(22, 86, 131, .3);
+    box-shadow: 2px 2px 8px rgba(22, 86, 131, .3);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.status {
+	font-weight:bold;
+}
+
+.toggle-holder {
+	float: right;
+}
+
+.status-holder {
+	line-height: 2.3em;
+	float: left;
+	width: 140px;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 30px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: #165683;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #165683;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 30px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+table.ntable {
+	width: 100%;
+	border: thin solid #c4d6e3;
+}
+
+.ntable thead {
+	background-color: #b3d6ef;
+	border: thin solid #c4d6e3;
+}
+
+.ntable tbody:nth-child(odd) {
+	background: #ddeaf2;
+}
+
+.ntable tbody:nth-child(even) {
+	background: #edf3f7;
+}
+
+.ntable th,
+.ntable td {
+	padding: 5px;
+}
+
+.ntable tr > *:first-child {
+	padding-left: 10px;
+}
+
+.ntable-label {
+	width: 200px;
+}
+.ntable-delete {
+	text-align: center;
+}
+
+
+
+
+
+.ntable .delete-button {
+	color: #FFF;
+	background-color: #890000c4;
+	padding: 3px;
+	border-radius: .3em;
+	border: solid .08em #6ba0c582;
+	-webkit-transition: .1s;
+	transition: .1s;	
+}
+
+.ntable .delete-button:hover {
+    color: #831616d6;
+    background-color: #8316161c;
+    border: solid .08em #831616d6;
+}
+
+.ntable .delete-button .fa-border {
+	border: 0;
+}
+
+
+
+
+
+
+
+
+.alert-info {
+	color: #165683;
+	background-color: #32aaff2e;
+}
+
+.alert {
+	border: 0;
+}
+
+

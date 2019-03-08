@@ -1,0 +1,11 @@
+<tbody>
+    <tr>
+        <td class="ntable-label"><span style="font-weight: bold;">{{ notification.label }}</span></td>
+        <td class="ntable-added">{{ moment(notification.timestamp).fromNow() }}</td>            
+        <td class="ntable-grade">{% for i in n_strings[notification]['grade'] %}{{ i }}<br />{% endfor %}</td>
+        <td class="ntable-subject">{% for i in n_strings[notification]['subject'] %}{{ i }}<br />{% endfor %}</td>
+        <td class="ntable-language">{% for i in n_strings[notification]['language'] %}{{ i }}<br />{% endfor %}</td>
+        <td class="ntable-campus">{% for i in n_strings[notification]['campus'] %}{{ i }}<br />{% endfor %}</td>
+        <td class="ntable-delete"><a class="delete-button" href="{{ url_for('main.remove_notification', notification_id=notification.id) }}"><i class="fa fa-border fa-close"></i></a></td>            
+    </tr>
+</tbody>

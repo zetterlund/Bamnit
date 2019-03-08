@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+
+{% block app_content %}
+
+    <div class="row heading">
+        <div class="col-xs-12">
+            <h1 class="heading">{{ heading }}</h1>
+        </div>
+    </div>
+
+    <div class="row chart-row">
+        <div class="col-md-6 col-xs-12">
+            <canvas id="myChart1" height="200"></canvas>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <canvas id="myChart2" height="240"></canvas>
+        </div>
+    </div>
+
+    <div class="row" style="text-align:center;">
+        <div class="col-xs-12">
+            <h3><a href="{{ url_for('main.about') }}">What is this website?</a></h3>
+        </div>
+    </div>
+
+    <script>
+        {% include 'js_helper.js' %}
+    </script>    
+
+{% endblock %}
+
+
+
+{% block scripts %}
+{{ super() }}
+
+    <script src="{{ url_for('static', filename='graphs.js') }}"></script>
+    <script src="{{ url_for('static', filename='toggle.js') }}"></script>
+
+{% endblock %}
