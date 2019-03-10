@@ -8,7 +8,7 @@ There are two main components to the project:
 
 
 In addition, several cron jobs are in place to keep the data up-to-date.  Every 10 minutes:
-* Scrapy crawls and collects data
+* Scraper crawls and collects data
 * Stats are computed and saved
 * Notifications are emailed to users
 
