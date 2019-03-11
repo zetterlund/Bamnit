@@ -49,7 +49,6 @@ class AesopPipeline(object):
                 listingdb.language = item['language']
                 listingdb.grade = item['grade']
                 listingdb.notification_sent = False
-
                 session.add(listingdb)
 
             session.commit()
@@ -80,10 +79,9 @@ class HelperPipeline(object):
         '(HS)',
         '(ELEM)E?N?T?A?R?Y?',
         '(MS)'
-    ]
+    ]    
     for i in range(len(grade_list)):
         grade_list[i] = re.compile(grade_list[i])
-
 
     def get_language(x):    
         pattern = re.compile('^(?:.*\W)?(BIL|ESL)(?:\W.*)?$')
@@ -91,14 +89,12 @@ class HelperPipeline(object):
             return(re.match(pattern, x).group(1))
         else:
             return "ENGLISH"
-
         
     def get_grade(x):
         for grade in HelperPipeline.grade_list:
             pattern = re.compile('(?:^|\W)' + grade.pattern + '(?:\W|$)')
             if re.search(pattern, x):
                 return re.search(pattern, x).group(1)    
-
 
     def get_class(x):
         for grade in HelperPipeline.grade_list:
@@ -108,9 +104,7 @@ class HelperPipeline(object):
             x = re.sub(pattern, '', x)
         return x.strip()
 
-
     def process_item(self, item, spider):
-
         item['begin_time'] = re.sub(r'^.*?(\d.*?(?:AM|PM)).*$', r'\1', item['times'], flags=re.DOTALL)
         item['begin_time'] = datetime.strptime(item['begin_time'], '%I:%M %p').time()
         item['begin_date'] = re.sub(r'^.*?(\d.*\d).*$', r'\1', item['begin_date'])

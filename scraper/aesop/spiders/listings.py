@@ -1,11 +1,7 @@
 # -*- coding, utf-8 -*-
 import scrapy
-from aesop.items import ListingItem
 import os
-import re
 import time
-import random
-from urllib.request import urlretrieve
 import hashlib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from scrapy.utils.project import get_project_settings
-
+from aesop.items import ListingItem
 
 
 def get_fields(listing, job, field_dict):
@@ -35,7 +31,6 @@ def get_fields(listing, job, field_dict):
     return listing
 
 
-
 class ListingsSpider(scrapy.Spider):
     name = 'listings'
     start_urls = get_project_settings().get("START_URL")
@@ -46,7 +41,8 @@ class ListingsSpider(scrapy.Spider):
         self.chrome_options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"')
 
     def parse(self, response):
-        driver1 = webdriver.Chrome(executable_path=os.path.abspath("/home/sven/scrape/chromedriver237"), chrome_options=self.chrome_options)
+        driver1 = webdriver.Chrome(executable_path=os.path.abspath("/home/sven/scrape/chromedriver237"),
+                                   chrome_options=self.chrome_options)
         try:
             driver1.get(response.url)
             time.sleep(3)
@@ -82,11 +78,11 @@ class ListingsSpider(scrapy.Spider):
                 pass
 
 
-            # ''' Take Screenshot '''
+            ''' Take Screenshot '''
             # driver1.save_screenshot('screenshots/test1.png')
 
 
-            # ''' Get job list '''
+            ''' Get job list '''
             jobs = driver1.find_elements_by_xpath("//div[@id='availableJobs']//tbody[contains(@class, 'job')]")
             # jobs = jobs[:10] # limit job list during testing
 
