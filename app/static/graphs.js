@@ -59,6 +59,9 @@
                     }
                 }],
                 xAxes: [{
+                    ticks: {
+                        autoSkip: false,
+                    },
                 }]
             },
             title: {
@@ -92,6 +95,11 @@
                         display: true,
                     }
                 }],
+                xAxes: [{
+                    ticks: {
+                        autoSkip: false,
+                    },
+                }]
             },
             title: {
                 display: true,
