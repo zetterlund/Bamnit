@@ -1,13 +1,13 @@
 from flask import render_template, flash, redirect, url_for, request, g, current_app
 from app import db
 from flask_login import current_user, login_required
-from app.models import User, Post, Listing, Notification
+from app.models import User, Listing, Notification
 from app.notifications import notification_helper
 from app.analysis.analysis_helper import get_weekday_count, get_time_available, grade_list
 from werkzeug.urls import url_parse
 from datetime import datetime, time
 from flask_babel import _, get_locale
-from app.main.forms import EditProfileForm, PostForm, get_notification_form
+from app.main.forms import EditProfileForm, get_notification_form
 from app.main import bp
 
 

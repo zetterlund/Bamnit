@@ -21,7 +21,7 @@
                 data : c1_values,
             }]
         };
-
+        
         var chartData2 = {
             labels : c2_labels,
             datasets : [{

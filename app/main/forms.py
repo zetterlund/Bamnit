@@ -8,7 +8,6 @@ from flask_babel import _, lazy_gettext as _l
 from app.notifications import notification_helper
 
 
-
 class EditProfileForm(FlaskForm):
     username = StringField(_l('Username'), validators=[DataRequired()])
     submit = SubmitField(_l('Submit'))
@@ -22,13 +21,6 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
                 raise ValidationError('Please use a different username')
-
-
-
-class PostForm(FlaskForm):
-    post = TextAreaField(_l('Say something'), validators=[DataRequired(), Length(min=1, max=140)])
-    submit = SubmitField(_l('Submit'))
-
 
 
 class NotificationForm(FlaskForm):
