@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="row heading">
+        <div class="col-xs-12">
+            <h1 class="heading">{{ heading }}</h1>
+        </div>
+    </div>
+
+    <div class="row api">
+        <div class="col-xs-12">
+
+            <p>You can use our API to communicate with Bamnit's resources.</p>
+
+            <h2>How to use the service:</h2>
+            <p>In order to make API calls, you'll need to first <a href="{{ url_for('auth.register') }}">create an account</a> with Bamnit.</p>
+            <p>Once you have an account, use your credentials in a <samp>POST</samp> request to receive a token for making API calls:</p>
+            <pre><code>$ curl --user &lt;username&gt;:&lt;password&gt; --request POST https://bamnit.com/api/tokens
+>>> {"token":"zJQDEEqv17PlCZFD3yDR4iGbYAm7eJdJ"}</code></pre>
+            <p>Include this token in the header of your API calls.  For example, to call the <strong>/api/users</strong> endpoint:</p>
+            <pre><code>$ curl --header "Authorization: Bearer zJQDEEqv17PlCZFD3yDR4iGbYAm7eJdJ" "https://bamnit.com/api/users"</code></pre>
+            <p>Your token is good for one hour and will automatically renew if you keep making requests.</p>
+
+            <h2>Endpoints:</h2>
+            <ul>
+                <li><a href="#/api/me">/api/me</a> <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code></li>
+                <li><a href="#/api/tokens">/api/tokens</a> <code>POST</code>, <code>DELETE</code></li>
+                <li><a href="#/api/listings">/api/listings</a> <code>GET</code></li>
+                <li><a href="#/api/listings/<id>">/api/listings/&lt;id&gt;</a> <code>GET</code></li>
+                <li><a href="#/api/users">/api/users</a> <code>GET</code></li>
+                <li><a href="#/api/users/<id>">/api/user/&lt;id&gt;</a> <code>GET</code></li> 
+                <li><a href="#/api/users/<id>/notifications">/api/user/&lt;id&gt;/notifications</a> <code>GET</code>, <code>POST</code></li>
+                <li><a href="#/api/users/<user_id>/notifications/<notification_id>">/api/user/&lt;user_id&gt;/notifications/&lt;notification_id&gt;</a> <code>GET</code>, <code>PUT</code>, <code>DELETE</code></li>
+            </ul>
+
+            <div class="endpoint" id="/api/me">
+                <h3>/api/me <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code></h3>
+                <p>Your user account.</p>
+                <p>If you do not have an account, you can make a <samp>POST</samp> request to create one.  Three fields are required to create an account: <samp>username</samp>, <samp>email</samp>, <samp>password</samp>.</p>
+<pre><code>$ curl --request POST \
+       --header "Content-Type: application/json" \
+       --data '{"username":"Bill", "email":"billw24@gmail.com", "password":"MyPassword5"}' \
+       https://bamnit.com/api/me</code></pre>
+                <p>While the <samp>POST</samp> request doesn't require a token, the other methods do.  You can view, update, or delete your account with the corresponding <samp>GET</samp>, <samp>PUT</samp>, and <samp>DELETE</samp> methods.
+                <p>When modifying your account, you can update the following fields: <samp>username</samp>, <samp>email</samp>, <samp>notifications_enabled</samp>.
+            </div>
+
+            <div class="endpoint" id="/api/tokens">
+                <h3>/api/tokens <code>POST</code>, <code>DELETE</code></h3>
+                <p>As explained above, use this endpoint to generate a token prior to issuing other API calls.</p>
+                <p>If you'd like to revoke your token to "sign out", you can issue a <samp>DELETE</samp> request:</p>
+                <pre><code>$ curl --request DELETE --header "Authorization: Bearer zJQDEEqv17PlCZFD3yDR4iGbYAm7eJdJ" https://bamnit.com/api/tokens</code></pre>
+            </div>
+
+            <div class="endpoint" id="/api/listings">
+                <h3>/api/listings <code>GET</code></h3>
+                <p>This endpoint points to a list of every teaching position captured by Bamnit.  You can specify the <samp>page</samp> and <samp>per_page</samp> parameters.</p>
+                <p>(Disclaimer: For privacy reasons, not all listing information is available through the API, and results are limited to the first 10 pages)</p>
+                <pre><code>{
+  "_links": {
+    "next": "/api/listings?per_page=5&page=11",
+    "prev": "/api/listings?per_page=5&page=9",
+    "self": "/api/listings?per_page=5&page=10"
+  },
+  "_meta": {
+    "page": 10,
+    "per_page": 5,
+    "total_items": 2459,
+    "total_pages": 492
+  },
+  "items": [
+    {
+      "_links": {
+        "self": "/api/listings/51"
+      },
+      "grade": "FOURTH GRADE",
+      "id": 51,
+      "language": "ESL",
+      "position": "TCHR",
+      "subject": null,
+      "unclaimed_duration": "0:40:05"
+    },
+    {...}, 
+    {...},
+    {...},
+    {...}
+  ]
+}</code></pre>
+            </div>
+
+            <div class="endpoint" id="/api/listings/<id>">
+                <h3>/api/listings/&lt;id&gt; <code>GET</code></h3>
+                <p>Retrieves a single listing.</p>
+            </div>
+
+            <div class="endpoint" id="/api/users">
+                <h3>/api/users <code>GET</code></h3>
+                <p>Retrieves all of Bamnit's users.</p>
+                <p>(Disclaimer: For privacy reasons, not all user information is available through the API)</p>
+                <pre><code>{
+  "_links": {...},
+  "_meta": {...},
+  "items": [
+    {
+      "_links": {
+        "notifications": "/api/users/238/notifications",
+        "self": "/api/users/238"
+      },
+      "id": 238,
+      "last_seen": "2019-03-13T03:33:58Z",
+      "notification_count": 5,
+      "notifications_enabled": true
+    },
+    {...},
+    {...}
+  ]
+}</code></pre>
+            </div>
+
+            <div class="endpoint" id="/api/users/<id>">
+                <h3>/api/users/&lt;id&gt; <code>GET</code></h3>
+                <p>Retrieves a single user.</p>
+            </div>
+
+            <div class="endpoint" id="/api/users/<id>/notifications">
+                <h3>/api/users/&lt;id&gt;/notifications <code>GET</code>, <code>POST</code></h3>
+                <p>Retrieves all of a user's notifications.  For privacy reasons, this will only retrieve notifications from your own account, so you must enter your user id in the <samp>id</samp> parameter.</p>
+                <p>You may <samp>POST</samp> to this endpoint to create a new notification.  <samp>POST</samp> requests must include a <samp>label</samp> field.</p>
+                <p>Optional fields to include in the request: <samp>campus</samp>, <samp>grade</samp>, <samp>language</samp>, <samp>subject</samp>.  These fields must be passed as lists.  Any optional fields not included in your request will be given a default value of <samp>"---ANY---"</samp> which will match everything.</p>
+                <p>You can view a dictionary of available field values <a href="{{ url_for('api.get_fields') }}">here</a>.
+                <pre><code><strong>Request:</strong>
+$ curl --request POST \
+       --header "Authorization: Bearer <em>&lt;token&gt;</em>" \
+       --header "Content-Type: application/json" \
+       --data '{"label": "My Elementary School Notification", \
+                "campus": "Pickle Elementary", \
+                "grade": ["FIRST GRADE", "SECOND GRADE", "THIRD GRADE"], \
+                "language": ["BIL", "ENGLISH"]}'' \
+       "https://bamnit.com/api/users/6/notifications"
+
+<strong>Response:</strong>       
+{
+  "_links": {
+    "notification_owner": "/api/users/6",
+    "self": "/api/users/6/notifications/74"
+  },
+  "campus": [
+    "Pickle Elementary"
+  ],
+  "grade": [
+    "FIRST GRADE",
+    "SECOND GRADE",
+    "THIRD GRADE"
+  ],
+  "label": "My Pickle Elementary Notification",
+  "language": [
+    "BIL",
+    "ENGLISH"
+  ],
+  "subject": [
+    "---ANY---"
+  ],
+  "timestamp": "2019-03-15T04:46:00+00:00"
+}</code></pre>
+            </div>
+
+            <div class="endpoint" id="/api/users/<user_id>/notifications/<notification_id>">
+                <h3>/api/users/&lt;user_id&gt;/notifications/&lt;notification_id&gt; <code>GET</code>, <code>PUT</code>, <code>DELETE</code></h3>
+                <p>Retrieves a single notification.</p>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

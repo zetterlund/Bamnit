@@ -11,14 +11,12 @@ from app.main.forms import EditProfileForm, get_notification_form
 from app.main import bp
 
 
-
 @bp.before_app_request
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
     g.locale = str(get_locale())
-
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -60,12 +58,10 @@ def index():
                                d=d)
 
 
-
 @bp.route('/about', methods=['GET', 'POST'])
 def about():
     return render_template('about.html',
                            heading="About")
-
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -85,7 +81,6 @@ def edit_profile():
                            form=form)
 
 
-
 @bp.route('/remove_notification/<notification_id>', methods=['GET', 'POST'])
 @login_required
 def remove_notification(notification_id):
@@ -98,7 +93,6 @@ def remove_notification(notification_id):
     else:
         flash('This is not your notification!')
         return redirect(url_for('main.index'))
-
 
 
 @bp.route('/notifications', methods=['GET', 'POST'])
@@ -121,7 +115,6 @@ def notifications():
                            form=form)
 
 
-
 @bp.route('/get_toggled_status', methods=['GET', 'POST']) 
 def toggled_status():
     current_status = request.args.get('status')
@@ -133,3 +126,9 @@ def toggled_status():
         current_user.notifications_enabled = False
         db.session.commit()
         return 'OFF'
+
+
+@bp.route('/api', methods=['GET'])
+def api():
+    return render_template('api.html',
+                           heading="API")

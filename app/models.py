@@ -70,7 +70,6 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
     def to_dict(self, include_email=False):
         data = {
             'id': self.id,
-            'username': self.username,
             'last_seen': self.last_seen.isoformat() + 'Z',
             'notification_count': len(list(self.notifications)),
             'notifications_enabled': self.notifications_enabled,
@@ -78,22 +77,13 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
                 'self': url_for('api.get_user', id=self.id),
                 'notifications': url_for('api.get_notifications', id=self.id),
             }
-        }
-        data['notifications'] = {}
-        for n in self.notifications:
-            n_dict = {}
-            n_dict['grade'] = ast.literal_eval(getattr(n, 'grade'))
-            n_dict['subject'] = ast.literal_eval(getattr(n, 'subject'))
-            n_dict['campus'] = ast.literal_eval(getattr(n, 'campus'))
-            n_dict['language'] = ast.literal_eval(getattr(n, 'language'))
-            n_dict['timestamp'] = getattr(n, 'timestamp').replace(tzinfo=timezone.utc).isoformat()
-            data['notifications'][getattr(n, 'label')] = n_dict            
+        }        
         if include_email:
             data['email'] = self.email
         return data
 
     def from_dict(self, data, new_user=False):
-        for field in ['username', 'email']:
+        for field in ['username', 'email', 'notifications_enabled']:
             if field in data:
                 setattr(self, field, data[field])
         if new_user and 'password' in data:
@@ -119,7 +109,7 @@ class User(PaginatedAPIMixin, UserMixin, db.Model):
         return user
 
 
-class Listing(db.Model):
+class Listing(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     aesop_id = db.Column(db.Integer)
     teacher = db.Column(db.String(256))
@@ -137,8 +127,22 @@ class Listing(db.Model):
     grade = db.Column(db.String(64))
     notification_sent = db.Column(db.Boolean)
 
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'position': self.position,
+            'subject': self.subject,
+            'language': self.language,
+            'grade': self.grade,
+            'unclaimed_duration': str(self.date_removed - self.date_posted),
+            '_links': {
+                'self': url_for('api.get_listing', id=self.id)
+            }            
+        }
+        return data
 
-class Notification(db.Model):
+
+class Notification(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)    
@@ -150,6 +154,34 @@ class Notification(db.Model):
 
     def remove_notification():
         Notification.query.filter(Notification.id==self.id).delete()
+
+    def to_dict(self):
+        data = {}
+        data['label'] = self.label
+        data['grade'] = ast.literal_eval(self.grade)
+        data['subject'] = ast.literal_eval(self.subject)
+        data['campus'] = ast.literal_eval(self.campus)
+        data['language'] = ast.literal_eval(self.language)
+        data['timestamp'] = self.timestamp.replace(tzinfo=timezone.utc).isoformat()
+        data['_links'] = {
+            'self': url_for('api.get_notification', user_id=self.user_id, notification_id=self.id),
+            'notification_owner': url_for('api.get_user', id=self.user_id)
+        }
+        return data
+
+    def from_dict(self, data, new_notification=False):
+        if new_notification==True:
+            self.label = 'My New Notification'
+            self.grade = "['---ANY---']"
+            self.subject = "['---ANY---']"
+            self.campus = "['---ANY---']"
+            self.language = "['---ANY---']"
+        self.timestamp = datetime.utcnow()
+        for field in ['label', 'grade', 'subject', 'campus', 'language']:
+            if field in data:
+                setattr(self, field, str(data[field])) # str() method used to store lists as strings in database
+
+
 
 
 @login.user_loader

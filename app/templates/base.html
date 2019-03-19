@@ -34,6 +34,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url_for('main.index') }}">Home</a></li>
                     <li><a href="{{ url_for('main.notifications') }}">Add Notification</a></li>
+                    <li><a href="{{ url_for('main.api') }}">API</a></li>
                     <li><a href="{{ url_for('main.about') }}">About</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -48,6 +49,8 @@
     </nav>
 {% endblock %}
 
+
+
 {% block content %}
     <div class="container">
         {% with messages = get_flashed_messages() %}
@@ -59,6 +62,14 @@
         {% endwith %}
 
         {% block app_content %}{% endblock %}
-
     </div>
+
+    {% block footer %}
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">Powered by Promethium</span>
+            </div>
+        </footer>
+    {% endblock %}
+
 {% endblock %}
