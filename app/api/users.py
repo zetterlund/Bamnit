@@ -1,9 +1,11 @@
 from app.api import bp
-from app.models import User, Notification
-from app.api.errors import bad_request, error_response
 from app.api.auth import token_auth
+from app.api.errors import bad_request, error_response
+from app.models import User, Notification
+from app.notifications.notification_helper import topic_list
 from app import db
 from flask import jsonify, request, url_for, g, abort
+import json
 
 
 @bp.route('/me', methods=['GET', 'PUT', 'DELETE'])
@@ -80,6 +82,8 @@ def get_notifications(id):
         return jsonify(data)
     if request.method == 'POST':
         data = request.get_json() or {}
+        if validate_notification(data) == False:
+            return bad_request('There was a problem with the data you supplied.  Make sure that the entries you supply for each field exist in our database.')
         n = Notification()
         setattr(n, "user_id", id)
         n.from_dict(data, new_notification=True)
@@ -110,3 +114,20 @@ def get_notification(user_id, notification_id):
         response = jsonify({})
         response.status_code = 200
         return response
+
+
+''' Function to check if notification requests contain valid data '''
+def validate_notification(data):
+    with open('app/notifications/field_dict.txt') as f:
+        body = f.read()
+    body = json.loads(body)
+    for topic in topic_list:
+        if topic in data:
+            if data[topic] is None:
+                return False
+            for item in data[topic]:
+                if item is None:
+                    return False
+                if item not in [f[0] for f in body[topic]]:
+                    return False
+    return True

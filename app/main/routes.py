@@ -96,7 +96,7 @@ def remove_notification(notification_id):
 
 
 @bp.route('/notifications', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def notifications():
     form = get_notification_form()
     if form.validate_on_submit():

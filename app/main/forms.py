@@ -2,10 +2,12 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, ValidationError, Length
 from app.models import User
-from flask import request
+from flask import request, flash
 from flask_babel import _, lazy_gettext as _l
+from flask_login import current_user
 
 from app.notifications import notification_helper
+
 
 
 class EditProfileForm(FlaskForm):
@@ -23,6 +25,28 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError('Please use a different username')
 
 
+
+# class IsUser(object):
+#     def __init__(self, min=-1, max=-1, message=None):
+#         pass
+#         # self.min = min
+#         # self.max = max
+#         # if not message:
+#         #     message = u'Field must be between %i and %i characters long.' % (min, max)
+#         # self.message = message
+
+#     def __call__(self, form, field):
+#         if 3 == 3:
+#             raise ValidationError('not a user!')
+#         # l = field.data and len(field.data) or 0
+#         # if l < self.min or self.max != -1 and l > self.max:
+#         #     raise ValidationError(self.message)
+
+
+
+
+
+
 class NotificationForm(FlaskForm):
     labels = notification_helper.get_field_dict()
     label = StringField('Label', validators=[DataRequired(), Length(min=1, max=256)], render_kw={"placeholder": "Name your Notification!"})
@@ -31,6 +55,13 @@ class NotificationForm(FlaskForm):
     language = SelectMultipleField('Language', choices=labels['language'], default=('---ANY---', '---ANY---'))
     campus = SelectMultipleField('Campus', choices=labels['campus'], default=('---ANY---', '---ANY---'))
     submit = SubmitField('Add Notification')
+
+    def validate(self):
+        if current_user.is_anonymous:
+            flash('You must be logged in to add notifications!')
+            return False
+        else:
+            return True
 
 def get_notification_form():
     labels = notification_helper.get_field_dict()

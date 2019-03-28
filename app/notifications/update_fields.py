@@ -13,7 +13,7 @@ from app.models import Listing
 
 
 
-logging.basicConfig(filename='app/notifications/update_fieldsERRORS.log',
+logging.basicConfig(filename='logs/update_fields.log',
                     level=logging.WARNING,
                     format='%(asctime)s %(levelname)s %(name)s %(message)s')
 logger=logging.getLogger(__name__)
@@ -22,6 +22,7 @@ config = configparser.ConfigParser()
 config.read('app/notifications/CREDENTIALS.INI')
 engine = create_engine(config.get('DEFAULT', 'creds'))
 Session = sessionmaker(bind=engine)
+
 
 
 def update_field_dict():
@@ -50,6 +51,7 @@ def update_field_dict():
     
     with open('app/notifications/field_dict.txt', 'w') as outfile:
         json.dump(field_dict, outfile)
+
 
 
 try:

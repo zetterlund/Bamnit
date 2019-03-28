@@ -133,7 +133,7 @@ $ curl --request POST \
        --header "Authorization: Bearer <em>&lt;token&gt;</em>" \
        --header "Content-Type: application/json" \
        --data '{"label": "My Elementary School Notification", \
-                "campus": "Pickle Elementary", \
+                "campus": ["Pickle Elementary"], \
                 "grade": ["FIRST GRADE", "SECOND GRADE", "THIRD GRADE"], \
                 "language": ["BIL", "ENGLISH"]}'' \
        "https://bamnit.com/api/users/6/notifications"
