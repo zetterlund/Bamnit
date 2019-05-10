@@ -6,8 +6,6 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-# import numpy as np
-# import math
 
 class ListingItem(scrapy.Item):
     aesop_id = scrapy.Field()

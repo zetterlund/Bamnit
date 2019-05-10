@@ -16,8 +16,6 @@ body {
 
 
 
-
-
 .bamnit-description {
 	text-align: center;
 	font-weight: bold;
@@ -28,8 +26,6 @@ body {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
-
-
 
 
 
@@ -51,10 +47,6 @@ div.logo img {
 h1.heading {
 	margin-top: 10px;
 }
-
-
-
-
 
 
 
@@ -108,7 +100,7 @@ h1.heading {
 
 
 
-.footer {
+footer.footer {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -116,7 +108,13 @@ h1.heading {
     line-height: 60px;
 }
 
+div.footer {
+	text-align: center;
+}
 
+.footer a:focus, .footer a:hover {
+	text-decoration: none;
+}
 
 
 
@@ -158,16 +156,6 @@ h1.heading {
     -webkit-box-shadow: 2px 2px 8px rgba(22, 86, 131, .3);
     box-shadow: 2px 2px 8px rgba(22, 86, 131, .3);
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -250,11 +238,6 @@ input:checked + .slider:before {
 
 
 
-
-
-
-
-
 table.ntable {
 	width: 100%;
 	border: thin solid #c4d6e3;
@@ -291,8 +274,6 @@ table.ntable {
 
 
 
-
-
 .ntable .delete-button {
 	color: #FFF;
 	background-color: #890000c4;
@@ -315,10 +296,8 @@ table.ntable {
 
 
 
-
-
 .api h2 {
-	margin-top: 25px;
+	margin-top: 30px;
 }
 
 .api .endpoint {
@@ -326,7 +305,7 @@ table.ntable {
 }
 
 .api .endpoint h3 {
-	margin-top: 15px;
+	margin-top: 20px;
 }
 
 .api samp {
@@ -342,7 +321,13 @@ table.ntable {
 	padding: 0 3px;
 }
 
+.api p {
+	margin: 0 0 5px;
+}
 
+.api pre {
+	margin: 15px 0 15px;
+}
 
 
 
@@ -354,5 +339,3 @@ table.ntable {
 .alert {
 	border: 0;
 }
-
-

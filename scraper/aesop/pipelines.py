@@ -14,7 +14,7 @@ import re
 from aesop.models import ListingDB, db_connect, create_table
 
 
-
+''' Pipeline for saving items into the database '''
 class AesopPipeline(object):
 
     def __init__(self):
@@ -27,11 +27,9 @@ class AesopPipeline(object):
         listing_exists = session.query(exists().where(ListingDB.aesop_id==item['aesop_id'])).scalar()
 
         try:
-
             if listing_exists:
                 the_listing = session.query(ListingDB).filter(ListingDB.aesop_id==item['aesop_id']).first()
                 the_listing.date_removed = datetime.now()
-
             else:
                 listingdb = ListingDB()
                 listingdb.aesop_id = item['aesop_id']
@@ -50,13 +48,10 @@ class AesopPipeline(object):
                 listingdb.grade = item['grade']
                 listingdb.notification_sent = False
                 session.add(listingdb)
-
             session.commit()
-
         except:
             session.rollback()
             raise
-
         finally:
             session.close()
 
@@ -64,6 +59,7 @@ class AesopPipeline(object):
 
 
 
+''' Pipeline for cleaning the scraped data before saving it '''
 class HelperPipeline(object):
 
     grade_list = [
@@ -79,22 +75,22 @@ class HelperPipeline(object):
         '(HS)',
         '(ELEM)E?N?T?A?R?Y?',
         '(MS)'
-    ]    
+    ]
     for i in range(len(grade_list)):
         grade_list[i] = re.compile(grade_list[i])
 
-    def get_language(x):    
+    def get_language(x):
         pattern = re.compile('^(?:.*\W)?(BIL|ESL)(?:\W.*)?$')
         if re.match(pattern, x):
             return(re.match(pattern, x).group(1))
         else:
             return "ENGLISH"
-        
+
     def get_grade(x):
         for grade in HelperPipeline.grade_list:
             pattern = re.compile('(?:^|\W)' + grade.pattern + '(?:\W|$)')
             if re.search(pattern, x):
-                return re.search(pattern, x).group(1)    
+                return re.search(pattern, x).group(1)
 
     def get_class(x):
         for grade in HelperPipeline.grade_list:
