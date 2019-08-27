@@ -3,7 +3,7 @@ from app import db
 from flask_login import current_user, login_required
 from app.models import User, Listing, Notification
 from app.notifications import notification_helper
-from app.analysis.analysis_helper import get_weekday_count, get_time_available, grade_list
+from app.analysis.analysis_helper import get_weekday_count, get_time_available, grade_list, get_daily_counts
 from werkzeug.urls import url_parse
 from datetime import datetime, time
 from flask_babel import _, get_locale
@@ -22,7 +22,7 @@ def before_request():
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
-    
+
     weekday_count = get_weekday_count()
     time_available = get_time_available()
     d = {}
@@ -62,6 +62,19 @@ def index():
 def about():
     return render_template('about.html',
                            heading="About")
+
+
+@bp.route('/test5', methods=['GET', 'POST'])
+def test5():
+    return render_template('test5.html')
+
+
+@bp.route('/explore', methods=['GET', 'POST'])
+def explore():
+    daily_counts = get_daily_counts()
+    return render_template('explore.html',
+                           heading="Explore",
+                           daily_counts=daily_counts)
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -107,7 +120,7 @@ def notifications():
                                     campus=str(form.campus.data),
                                     receiver=current_user)
         db.session.add(notification)
-        db.session.commit()        
+        db.session.commit()
         flash('Notification \'{}\' has been added!'.format(form.label.data))
         return redirect(url_for('main.index', username=current_user.username))
     return render_template('notifications.html',
@@ -115,7 +128,7 @@ def notifications():
                            form=form)
 
 
-@bp.route('/get_toggled_status', methods=['GET', 'POST']) 
+@bp.route('/get_toggled_status', methods=['GET', 'POST'])
 def toggled_status():
     current_status = request.args.get('status')
     if current_status == 'OFF':

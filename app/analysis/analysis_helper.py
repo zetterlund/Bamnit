@@ -31,3 +31,9 @@ def get_time_available():
     for g in grade_list:
         time_list.append(time_available[g])
     return time_list
+
+
+def get_daily_counts():
+    with open('app/analysis/daily_counts.txt', 'r') as the_file:
+        daily_counts = json.load(the_file)
+    return daily_counts

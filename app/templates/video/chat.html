@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block styles %}
+{{ super() }}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='video-style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block app_content %}
+
+    <div class="row heading">
+        <div class="col-xs-12">
+            <h1 class="heading">{{ heading }}</h1>
+        </div>
+    </div>
+
+
+    <div id="okta-login-container"></div>
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-md-auto align-self-center">
+          <p id="login"><b>NOTE</b>: You are not currently logged in. If you'd like to start your own
+            chat room please <button type="button" class="btn btn-light">log in</button></p>
+          <div id="url" class="alert alert-dark" role="alert">
+            <span id="roomIntro">ROOM URL</span>: <span id="roomUrl"></span>
+          </div>
+        </div>
+        <div class="col"></div>
+      </div>
+
+      <div id="remotes" class="row">
+        <div class="col-md-6">
+          <div class="videoContainer">
+            <video id="selfVideo"></video>
+            <meter id="localVolume" class="volume"></meter>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+{% endblock %}
