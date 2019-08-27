@@ -7,6 +7,15 @@ Chart.defaults.global.animation.easing = 'easeOutQuart';
 Chart.defaults.global.defaultFontFamily = "Roboto, sans-serif";
 
 
+Chart.Tooltip.positioners.custom = function(elements, position) {
+    const x = elements[0]._model.x + 1;
+    const y = elements[0]._model.y - 15;
+    return {
+        x: x,
+        y: y
+    };
+};
+
 
 // add helper functions
 function addDays(date, days) {
@@ -97,14 +106,58 @@ let gradeList = Object.keys(grade_counts).map(function(grade) {
 
 
 
+
+
+
+
+
+
+
+
 // set chart options
 var chartOptions1 = {
     maintainAspectRatio: false,
     tooltips: {
+        yAlign: 'bottom',
+        xAlign: 'center',
+        position: 'custom',
+        displayColors: false,
+        mode: 'index',
+        animationDuration: 0,
+        bodyFontSize: 14,
+        cornerRadius: 5,
+        caretSize: 10,
+        caretPadding: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        bodyFontColor: '#000000',
+        bodySpacing: 4,
+        xPadding: 10,
+        yPadding: 10,
+        borderColor: "rgba(0, 0, 0, 0.6)",
+        borderWidth: 2,
+        // filter: function (tooltipItem) {
+        //     return tooltipItem.datasetIndex === 0;
+        // },      
         callbacks: {
-            label: function(tooltipItem) {
-                return tooltipItem.yLabel;
-            }
+            title: function(tooltipItem) {
+                return;
+            },
+            label: function(tooltipItem, data) {
+                if (tooltipItem.datasetIndex == 0) {
+                    return ([
+                        data.classType,
+                        tooltipItem.yLabel + " opening" + (tooltipItem.yLabel == 1 ? "" : "s") + " on " + tooltipItem.label
+                    ]);                    
+                } else {
+                    return;
+                }
+            },
+            labelColor: function(tooltipItem, data) {
+                return {
+                    borderColor: 'rgb(255, 0, 0)',
+                    backgroundColor: 'rgb(255, 0, 0)'
+                };
+            },
         },
     },
     scales: {
@@ -157,17 +210,81 @@ var chartOptions1 = {
 
 
 
+
+
+
+// functions for colorizing the "Today" bar in the chart
+function getDayRelation(someDate) {
+  someDate = new Date(someDate);
+  const today = new Date();
+  if (
+    someDate.getUTCDate() == today.getUTCDate() &&
+    someDate.getUTCMonth() == today.getUTCMonth() &&
+    someDate.getUTCFullYear() == today.getUTCFullYear()
+  ) {
+    return "today";
+  } else if (someDate > today) {
+    return "afterToday";
+  } else {
+    return "beforeToday";
+  }
+}
+
+function colorizeBars(labels) {
+  const backgroundColor = [];
+  const hoverBackgroundColor = [];
+  const borderWidth = [];
+
+  for (var i=0; i<labels.length; i++) {
+    switch (getDayRelation(labels[i])) {
+      case "today":
+        backgroundColor.push("rgba(67,137,187,0.38)");
+        hoverBackgroundColor.push("rgba(67,137,187,0.34)");
+        borderWidth.push({
+          top: 0,
+          right: 2,
+          bottom: 0,
+          left: 0
+        });        
+        break;
+      case "afterToday":
+        backgroundColor.push("rgba(67,137,187,0.18)");
+        hoverBackgroundColor.push("rgba(67,137,187,0.14)");
+        borderWidth.push(0);
+        break;
+      case "beforeToday":
+        backgroundColor.push("rgba(67,137,187,0.38)");
+        hoverBackgroundColor.push("rgba(67,137,187,0.34)");
+        borderWidth.push(0);
+        break;
+    }
+  }
+
+  const colorizedBars = {
+    'backgroundColor': backgroundColor,
+    'hoverBackgroundColor': hoverBackgroundColor,
+    'borderWidth': borderWidth,
+  };
+  return colorizedBars;
+}
+
+
+
 class BarChart extends React.Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
+    this.state = {
+      'colorizedBars': colorizeBars(this.props.data.labels)
+    }
   }
 
   componentDidUpdate() {
     this.myChart.data.labels = this.props.data.labels;
-    this.myChart.data.datasets[0].data = this.props.data.totalValues;
-    this.myChart.data.datasets[1].data = this.props.data.jobValues;
-    this.myChart.data.datasets[0].backgroundColor = this.props.backgroundColor;
+    this.myChart.data.datasets[1].data = this.props.data.totalValues;
+    this.myChart.data.datasets[0].data = this.props.data.jobValues;
+    this.myChart.data.classType = this.props.classType
+    // this.myChart.data.datasets[1].backgroundColor = this.props.backgroundColor;
     this.myChart.update();
   }
 
@@ -176,26 +293,29 @@ class BarChart extends React.Component {
       type: 'bar',
       options: chartOptions1,
       data: {
+        classType: this.props.classType,
         labels: this.props.data.labels,
         datasets: [{
+          label: "My Job Data",
+          fill: true,
+          backgroundColor: "rgba(30,60,100,0.45)",
+          hoverBackgroundColor: "rgba(30,60,100,0.7)",                
+          data: this.props.data.jobValues,
+          xAxisID: "bar-x-axis2",
+          // yAxisID: "bar-y-axis2",
+          // stack: 2
+        }, {
           label: this.props.title,
           fill: true,
-          backgroundColor: this.props.backgroundColor,
-          hoverBackgroundColor: "rgba(67,137,187,0.6)",
+          backgroundColor: this.state.colorizedBars['backgroundColor'],
+          hoverBackgroundColor: this.state.colorizedBars['hoverBackgroundColor'],
+          borderColor: "rgba(137,0,0,0.5)",
+          borderWidth: this.state.colorizedBars['borderWidth'],
           data: this.props.data.totalValues,
           xAxisID: "bar-x-axis1",
           // yAxisID: "bar-y-axis1",
           spanGaps: false,
           // stack: 1
-        }, {
-          label: "My Job Data",
-          fill: true,
-          backgroundColor: "rgba(30,60,100,0.38)",
-          hoverBackgroundColor: "rgba(30,60,100,0.6)",                
-          data: this.props.data.jobValues,
-          xAxisID: "bar-x-axis2",
-          // yAxisID: "bar-y-axis2",
-          // stack: 2
         }]
       }
     });
@@ -210,6 +330,7 @@ class BarChart extends React.Component {
 
 
 
+// functions to help the Dynamic Search component
 function TypeButton(props) {
   return(
     <li><a onClick={props.onClick}>{props['data-target']}</a></li>
@@ -233,6 +354,8 @@ function TypeList(props) {
   )
 }
 
+
+
 class DynamicSearch extends React.Component {
   constructor(props) {
     super(props);
@@ -246,7 +369,6 @@ class DynamicSearch extends React.Component {
     this.setState(function(prevState) {return {searchString: event.target.value}});
     console.log("Scope updated!");
   }
-
 
   render() {
     var subjects = this.props.subjects;
@@ -281,7 +403,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       data: getData('TCHR ASST HIGH SCHOOL ONE TO O', 'subject'),
-      backgroundColor: "rgba(67,137,187,0.38)"
+      classType: 'TCHR ASST HIGH SCHOOL ONE TO O'
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -289,7 +411,8 @@ class App extends React.Component {
   handleClick(target, lookupType) {
     this.setState(function(prevState) {
       let state = prevState;
-      state.data = getData(target, lookupType)
+      state.data = getData(target, lookupType);
+      state.classType = target;
       return state;
     })
   }
@@ -304,7 +427,7 @@ class App extends React.Component {
                 <BarChart
                   data={this.state.data}
                   title="My awesome title"
-                  backgroundColor={this.state.backgroundColor}
+                  classType={this.state.classType}
                   height="500"
                 />
               </div>
