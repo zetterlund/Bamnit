@@ -1,69 +1,5 @@
 
 
-
-
-
-// import Joke from './components/Joke';
-// import TodoItem from './components/TodoItem';
-// import LoginButton from './components/LoginButton';
-
-// var todosData = [
-//   {id: 1, name: "First chore", details: "Details of first chore are here", completed: false},
-//   {id: 2, name: "Second thing", details: "And the second things details here.", completed: true}
-// ];
-
-
-
-// class MyApp extends React.Component {
-//   constructor() {
-//     super()
-//     this.state = {
-//       todos: todosData
-//     }
-//     this.handleChange = this.handleChange.bind(this)
-//   }
-
-//   handleChange(id) {
-//     this.setState(prevState => {
-//       const updatedTodos = prevState.todos.map(todo => {
-//         if (todo.id == id) {
-//           todo.completed = !todo.completed
-//         }
-//         return todo
-//       })
-//       return {
-//         todos: updatedTodos
-//       }
-//     })
-//   }
-
-//   render() {
-//     const todoItems = this.state.todos.map(item => <TodoItem key={item.id} name={item.name} item={item} handleChange={this.handleChange} />)
-
-//     return (
-//       <div>
-//         {todoItems}
-//       </div>
-//     )
-//   }
-// }
-
-// ReactDOM.render(
-//   <MyApp />,
-//   document.getElementById("root")
-// )
-
-
-
-
-
-
-
-
-
-
-
-
 // set chart global parameters
 Chart.defaults.global.legend.display = false;
 Chart.defaults.global.animation.duration = 1000;
@@ -72,7 +8,7 @@ Chart.defaults.global.defaultFontFamily = "Roboto, sans-serif";
 
 
 
-
+// add helper functions
 function addDays(date, days) {
     var newDate = new Date(date.valueOf());
     newDate.setDate(newDate.getDate() + days);
@@ -121,9 +57,43 @@ function populateDateRange(data) {
     return dates;
 }
 
+function getData(target, lookupType) {
+  let labels = [];
+  let totalValues = [];
+  let totalData = populateDateRange(total_counts)
+  for (const i of Object.entries(totalData)) {
+    labels.push(i[0]);
+    totalValues.push(i[1]);
+  }
+
+  let jobValues = [];
+  let lookupDict = {
+    'subject': subject_counts,
+    'grade': grade_counts
+  };
+  let jobData = populateDateRange(lookupDict[lookupType][target]);
+  for (const i of Object.entries(jobData)) {
+    jobValues.push(i[1]);
+  }
+
+  let data = {
+    labels: labels,
+    totalValues: totalValues,
+    jobValues: jobValues
+  };
+
+  return data;
+}
 
 
 
+let subjectList = Object.keys(subject_counts).map(function(subject) {
+  return ({"name": subject});
+});
+
+let gradeList = Object.keys(grade_counts).map(function(grade) {
+  return ({"name": grade});
+})
 
 
 
@@ -187,43 +157,6 @@ var chartOptions1 = {
 
 
 
-
-
-
-
-
-function getData(target, lookupType) {
-
-  let labels = [];
-  let totalValues = [];
-  let totalData = populateDateRange(total_counts)
-  for (const i of Object.entries(totalData)) {
-    labels.push(i[0]);
-    totalValues.push(i[1]);
-  }
-
-  let jobValues = [];
-  let lookupDict = {
-    'subject': subject_counts,
-    'grade': grade_counts
-  };
-  let jobData = populateDateRange(lookupDict[lookupType][target]);
-  for (const i of Object.entries(jobData)) {
-    jobValues.push(i[1]);
-  }
-
-  let data = {
-    labels: labels,
-    totalValues: totalValues,
-    jobValues: jobValues
-  };
-
-  return data;
-}
-
-
-
-
 class BarChart extends React.Component {
   constructor(props) {
     super(props);
@@ -283,7 +216,6 @@ function TypeButton(props) {
   )
 }
 
-
 function TypeList(props) {
   return (
     props.targets.map(function(target) {
@@ -300,8 +232,6 @@ function TypeList(props) {
 
   )
 }
-
-
 
 class DynamicSearch extends React.Component {
   constructor(props) {
@@ -342,39 +272,16 @@ class DynamicSearch extends React.Component {
       </div>
     )
   }
-
-
 }
-
-
-
-
-
-
-
-
 
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-
-    var subjectList = Object.keys(subject_counts).map(function(subject) {
-      return ({"name": subject});
-    });
-
-    var gradeList = Object.keys(grade_counts).map(function(grade) {
-      return ({"name": grade});
-    })
-
-
     this.state = {
       data: getData('TCHR ASST HIGH SCHOOL ONE TO O', 'subject'),
-      backgroundColor: "rgba(67,137,187,0.38)",
-      subjectList: subjectList,
-      gradeList: gradeList
+      backgroundColor: "rgba(67,137,187,0.38)"
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -406,14 +313,13 @@ class App extends React.Component {
         </div>
         <div class="row">
           <div class="col-xs-12">
-            <DynamicSearch handleClick={(a, b) => this.handleClick(a, b)} subjects={this.state.subjectList} grades={this.state.gradeList} />
+            <DynamicSearch handleClick={(a, b) => this.handleClick(a, b)} subjects={subjectList} grades={gradeList} />
           </div>
         </div>
       </div>
     );
   }
 }
-
 
 
 
