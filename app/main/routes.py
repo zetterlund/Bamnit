@@ -64,11 +64,6 @@ def about():
                            heading="About")
 
 
-@bp.route('/test5', methods=['GET', 'POST'])
-def test5():
-    return render_template('test5.html')
-
-
 @bp.route('/explore', methods=['GET', 'POST'])
 def explore():
     daily_counts = get_daily_counts()
