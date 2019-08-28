@@ -330,22 +330,58 @@ class BarChart extends React.Component {
 
 
 
-// functions to help the Dynamic Search component
+// Get the total number of jobs for each classType
+function getClassTypeCounts() {
+  const gradeCounts = {};
+  const subjectCounts = {};
+
+  const counts = {
+    'grade': gradeCounts,
+    'subject': subjectCounts
+  };
+
+  Object.entries(grade_counts).map(function(x) {
+    gradeCounts[x[0]] = (x[1].map((y) => y[1]).reduce((a,b) => a + b, 0));
+  });
+  Object.entries(subject_counts).map(function(x) {
+    subjectCounts[x[0]] = (x[1].map((y) => y[1]).reduce((a,b) => a + b, 0));
+  });  
+
+  return counts;
+}
+const classTypeCounts = getClassTypeCounts();
+
+
+
+
+
+// functional components rendered by the DynamicSearch component
 function TypeButton(props) {
   return(
-    <li><a onClick={props.onClick}>{props['data-target']}</a></li>
+    <li className="list-item">
+      <div>
+        <span>({props['data-count']})</span>
+        <a onClick={props.onClick}>{props['data-target']}</a>
+      </div>
+    </li>
   )
 }
 
 function TypeList(props) {
+  const grades = props.targets.map(x => x.name)
+  grades.sort(function(a,b) {
+    return classTypeCounts["grade"][a] - classTypeCounts["grade"][b];
+  }).reverse();
+
   return (
-    props.targets.map(function(target) {
+    grades.map(function(course) {
       return(
         <TypeButton
-          data-target={target.name}
+          data-target={course}
+          data-count={classTypeCounts[props.lookupType][course]}
           data-lookupType={props.lookupType}
           onClick={function() {
-            return (props.handleClick(target.name, props.lookupType));
+            return (props.handleClick(course, props.lookupType));
           }}
         />        
       )
@@ -380,17 +416,27 @@ class DynamicSearch extends React.Component {
       grades = grades.filter(grade => grade.name.toLowerCase().match(searchString));
     }
 
-    return (
+    return (      
       <div>
-        <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search!" />
-        <h2>Grades</h2>
-        <ul>
-          <TypeList targets={grades} lookupType="grade" handleClick={(a, b) => this.props.handleClick(a, b)} />
-        </ul>
-        <h2>Subjects</h2>
-        <ul>
-          <TypeList targets={subjects} lookupType="subject" handleClick={(a, b) => this.props.handleClick(a, b)} />
-        </ul>        
+        <div class="row">
+          <div class="col-xs-12">
+            <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search!" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <h2>Grades</h2>
+            <ul className="courses-list">
+              <TypeList targets={grades} lookupType="grade" handleClick={(a, b) => this.props.handleClick(a, b)} />
+            </ul>
+          </div>
+          <div class="col-xs-12 col-md-6">
+            <h2>Subjects</h2>
+            <ul className="courses-list">
+              <TypeList targets={subjects} lookupType="subject" handleClick={(a, b) => this.props.handleClick(a, b)} />
+            </ul>
+          </div>
+        </div>
       </div>
     )
   }
@@ -434,11 +480,7 @@ class App extends React.Component {
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <DynamicSearch handleClick={(a, b) => this.handleClick(a, b)} subjects={subjectList} grades={gradeList} />
-          </div>
-        </div>
+        <DynamicSearch handleClick={(a, b) => this.handleClick(a, b)} subjects={subjectList} grades={gradeList} />
       </div>
     );
   }
@@ -446,4 +488,4 @@ class App extends React.Component {
 
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('graph-root'));

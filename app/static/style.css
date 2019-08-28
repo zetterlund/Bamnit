@@ -11,7 +11,8 @@ body {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Open Sans', sans-serif;
+	letter-spacing: -.03em;
 }
 
 
@@ -60,6 +61,7 @@ h1.heading {
 
 .navbar-default .navbar-nav>li>a {
     color: #FFF;
+    font-weight: 700;
 }
 
 .navbar-default .navbar-nav>li>a:focus,
@@ -338,4 +340,40 @@ table.ntable {
 
 .alert {
 	border: 0;
+}
+
+
+
+#graph-root ul.courses-list {
+	list-style: none;
+	padding-left: 20px;
+}
+
+#graph-root .list-item {
+
+}
+
+#graph-root .list-item div {
+/*	height: 50px;
+	line-height: 60px;*/
+}
+
+#graph-root .list-item a {
+	font-size: 1.3em;
+	font-weight: 500;
+	line-height: normal;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#graph-root .list-item span {
+	font-style: oblique;
+	margin-right: 10px;
+	font-size: 0.8em;
+	color: #AAAAAA;
+	line-height: normal;
+	display: inline-block;
+	vertical-align: middle;
+	min-width: 40px;
+	text-align: right;
 }
