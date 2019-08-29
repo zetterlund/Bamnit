@@ -19,10 +19,8 @@ def before_request():
     g.locale = str(get_locale())
 
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/index', methods=['GET', 'POST'])
-def index():
-
+@bp.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
     weekday_count = get_weekday_count()
     time_available = get_time_available()
     d = {}
@@ -39,8 +37,8 @@ def index():
         user = current_user
         page = request.args.get('page', 1, type=int)
         notifications = user.notifications.order_by(Notification.timestamp.desc()).paginate(page, current_app.config['POSTS_PER_PAGE'], False)
-        next_url = url_for('main.index', username=user.username, page=notifications.next_num) if notifications.has_next else None
-        prev_url = url_for('main.index', username=user.username, page=notifications.prev_num) if notifications.has_prev else None
+        next_url = url_for('main.dashboard', username=user.username, page=notifications.next_num) if notifications.has_next else None
+        prev_url = url_for('main.dashboard', username=user.username, page=notifications.prev_num) if notifications.has_prev else None
         n_strings = notification_helper.get_strings(notifications.items)
         return render_template('dashboard.html',
                                d=d,
@@ -53,9 +51,8 @@ def index():
                                )
 
     else:
-        return render_template('index.html',
-                               heading="Welcome",
-                               d=d)
+        return render_template('dashboard_loggedout.html',
+                               heading="Dashboard")
 
 
 @bp.route('/about', methods=['GET', 'POST'])
@@ -64,8 +61,9 @@ def about():
                            heading="About")
 
 
-@bp.route('/explore', methods=['GET', 'POST'])
-def explore():
+# @bp.route('/index', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
+def index():
     daily_counts = get_daily_counts()
     return render_template('explore.html',
                            heading="Explore",

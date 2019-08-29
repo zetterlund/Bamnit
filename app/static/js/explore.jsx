@@ -2,13 +2,13 @@
 
 // set chart global parameters
 Chart.defaults.global.legend.display = false;
-Chart.defaults.global.animation.duration = 1000;
+Chart.defaults.global.animation.duration = 750;
 Chart.defaults.global.animation.easing = 'easeOutQuart';
 Chart.defaults.global.defaultFontFamily = "Roboto, sans-serif";
 
 
 Chart.Tooltip.positioners.custom = function(elements, position) {
-    const x = elements[0]._model.x + 1;
+    const x = elements[0]._model.x + 0;
     const y = elements[0]._model.y - 15;
     return {
         x: x,
@@ -168,8 +168,7 @@ var chartOptions1 = {
             ticks: {
                 beginAtZero: true,
                 min: 0,
-                // max: 100,
-                stepSize: 5
+                stepSize: 10
                 // callback: function(label, index, labels) {
                 //     return Math.round(label*100)+'%';
                 // }
@@ -203,8 +202,8 @@ var chartOptions1 = {
     },
     title: {
         display: true,
-        text: 'Distribution of teacher absences',
-        fontSize: 14,
+        text: 'Total Teacher Absences in Austin',
+        fontSize: 16,
     }
 };
 
@@ -355,10 +354,25 @@ const classTypeCounts = getClassTypeCounts();
 
 
 
+
+function DisplayCurrentClass(props) {
+  const courseCount = classTypeCounts[props.lookupType][props.classType];
+  return (
+    <div id="display-current-class">
+      <p><span class="class-type">{props.classType}</span></p>
+      <p><span class="course-count">{courseCount}</span> total openings</p>
+    </div>
+  )
+}
+
+
+
+
+
 // functional components rendered by the DynamicSearch component
 function TypeButton(props) {
   return(
-    <li className="list-item">
+    <li className={props['data-buttonClass']}>
       <div>
         <span>({props['data-count']})</span>
         <a onClick={props.onClick}>{props['data-target']}</a>
@@ -368,15 +382,16 @@ function TypeButton(props) {
 }
 
 function TypeList(props) {
-  const grades = props.targets.map(x => x.name)
-  grades.sort(function(a,b) {
-    return classTypeCounts["grade"][a] - classTypeCounts["grade"][b];
+  const courses = props.targets.map(x => x.name)
+  courses.sort(function(a,b) {
+    return classTypeCounts[props.lookupType][a] - classTypeCounts[props.lookupType][b];
   }).reverse();
 
   return (
-    grades.map(function(course) {
+    courses.map(function(course) {
       return(
         <TypeButton
+          data-buttonClass={"list-item" + (props.currentClassType == course && props.currentLookupType == props.lookupType ? " selected" : "")}
           data-target={course}
           data-count={classTypeCounts[props.lookupType][course]}
           data-lookupType={props.lookupType}
@@ -420,20 +435,39 @@ class DynamicSearch extends React.Component {
       <div>
         <div class="row">
           <div class="col-xs-12">
-            <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search!" />
+            <DisplayCurrentClass classType={this.props.currentClassType} lookupType={this.props.currentLookupType} />
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-6">
-            <h2>Grades</h2>
+          <div class="col-xs-12 col-md-4">
+            <div id="classes-filter">
+              <label>Filter classes</label>
+              <br />
+              <input type="text" value={this.state.searchString} onChange={this.handleChange} placeholder="Search!" />
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3">
+            <h3>Grades</h3>
             <ul className="courses-list">
-              <TypeList targets={grades} lookupType="grade" handleClick={(a, b) => this.props.handleClick(a, b)} />
+              <TypeList
+                targets={grades}
+                lookupType="grade"
+                handleClick={(a, b) => this.props.handleClick(a, b)}
+                currentClassType={this.props.currentClassType}
+                currentLookupType={this.props.currentLookupType}
+              />
             </ul>
           </div>
-          <div class="col-xs-12 col-md-6">
-            <h2>Subjects</h2>
+          <div class="col-xs-12 col-sm-6 col-md-5">
+            <h3>Subjects</h3>
             <ul className="courses-list">
-              <TypeList targets={subjects} lookupType="subject" handleClick={(a, b) => this.props.handleClick(a, b)} />
+              <TypeList
+                targets={subjects}
+                lookupType="subject"
+                handleClick={(a, b) => this.props.handleClick(a, b)}
+                currentClassType={this.props.currentClassType}
+                currentLookupType={this.props.currentLookupType}
+              />
             </ul>
           </div>
         </div>
@@ -448,8 +482,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: getData('TCHR ASST HIGH SCHOOL ONE TO O', 'subject'),
-      classType: 'TCHR ASST HIGH SCHOOL ONE TO O'
+      classType: 'FIFTH GRADE',
+      lookupType: 'grade',
+      data: getData('FIFTH GRADE', 'grade'),
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -459,6 +494,7 @@ class App extends React.Component {
       let state = prevState;
       state.data = getData(target, lookupType);
       state.classType = target;
+      state.lookupType = lookupType;
       return state;
     })
   }
@@ -472,7 +508,7 @@ class App extends React.Component {
               <div className="sub chart-wrapper">
                 <BarChart
                   data={this.state.data}
-                  title="My awesome title"
+                  // title="My awesome title"
                   classType={this.state.classType}
                   height="500"
                 />
@@ -480,7 +516,13 @@ class App extends React.Component {
             </div>
           </div>
         </div>
-        <DynamicSearch handleClick={(a, b) => this.handleClick(a, b)} subjects={subjectList} grades={gradeList} />
+        <DynamicSearch
+          currentClassType={this.state.classType}
+          currentLookupType={this.state.lookupType}
+          handleClick={(a, b) => this.handleClick(a, b)}
+          subjects={subjectList}
+          grades={gradeList}
+        />
       </div>
     );
   }

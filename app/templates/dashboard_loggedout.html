@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+
+{% block app_content %}
+
+    <div class="row heading">
+        <div class="col-xs-12">
+            <h1 class="heading">{{ heading }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h4>If you were logged in, this is where your dashboard would be.  Here is a preview of what it would look like:</h4>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row" style="text-align:center;">
+        <div class="col-xs-12">
+            <a href="{{ url_for('static', filename='images/dashboard_preview.gif') }}">
+                <img src="{{ url_for('static', filename='images/dashboard_preview.gif') }}" width="90%" />
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
+
+

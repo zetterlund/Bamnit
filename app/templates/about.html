@@ -2,16 +2,41 @@
 
 {% block app_content %}
 
-    <div class="logo">
-        <img src="{{ url_for('static', filename='logo/logo1.gif') }}" alt="BAMNit: By Any Means Necessary" />
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo/logo1.gif') }}" alt="BAMNit: By Any Means Necessary" />
+            </div>
+        </div>
     </div>
-    <h4 class="bamnit-description">Bamnit is a service for substitute teachers to receive notifications when their preferred jobs become available.</h4>
-    <p>I created this website for two reasons:</p>
-    <ol>
-        <li>I do part-time work as a substitute teacher, and wanted to get quick emails whenever jobs with my favorite grade or subject to teach were available.</li>
-        <li>My longer-term career is in computer programming, and I built this project as a demonstration of the variety of my skill set.  It took several different pieces of technology to bring everything together, and I'm happy with how it turned out.</li>
-    </ol>
-    <p>Many school districts use a CMS called AesopOnline, which is essentially just a static webpage that lists a school district's available jobs, and which substitute teachers must periodically log onto to check for jobs.  Bamnit is a tool where teachers can specify exactly what kind of parameters of a job they are looking for (e.g. Middle School Art classes) and receive an email notification when a job with those parameters is available.</p>
-    <p>Feel free to create an account, add some notifications, and play around with the tool!</p>
+    <div class="row">
+        <div class="col-xs-12">
+            <h4 class="bamnit-description">Bamnit is a service for substitute teachers to receive notifications when their preferred jobs become available.</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>What does this website do?</h3>
+            <p><span style="font-weight:bold;">The Problem:</span> When a school teacher plans to miss a day of school, the school district has to find a temporary replacement (a substitute teacher) to come in and teach the class for the day.  Many school districts use a service called AesopOnline, which is essentially just a static webpage that lists a school district's available jobs.  Substitute teachers have to continually manually log onto AesopOnline to check for jobs, and then manually scour the list of hundreds of open jobs for those they are interested in.</p>
+            <p><span style="font-weight:bold;">The Solution:</span>Bamnit is a tool where teachers can specify exactly what kind of jobs they are looking for (e.g. Middle School Art classes, High School Math classes) and receive an email notification when those jobs are available.</p>
+            <p>In addition to the Notification tool, I've created an <a href="{{ url_for('main.api') }}">API</a> for the website so that users can programmatically interact with the service.  I've also created a Dashboard and various graphs to explore the data I've gathered on teacher absences.  The available data is specifically from <a href="https://www.austinisd.org/">Austin Independent School District</a>.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Why did you build this website?</h3>
+            <p>I created this website for two reasons:</p>
+            <ol>
+                <li>I do occasional part-time work as a substitute teacher (whenever I can manage to rouse myself at 6:00am), and wanted to get quick emails whenever jobs with my favorite grade or subject to teach were available.</li>
+                <li>My longer-term career is in computer programming, and I built this project as a demonstration of the variety of my skill set.  It took several different pieces of technology to bring everything together, and I'm happy with how it turned out.</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <p>You can view the source code for this website at <a href="https://github.com/zetterlund/Bamnit">https://github.com/zetterlund/Bamnit</a>.
+            <p>Feel free to create an account, add some notifications, and play around with the tool!</p>                
+        </div>
+    </div>            
 
 {% endblock %}

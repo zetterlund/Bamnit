@@ -9,11 +9,13 @@
         </div>
     </div>
 
-
-	<h4>Use this tool to add a notification to your account</h4>
-    <p>Once a job appears in the system that meets these criteria, you will be emailed a notification.</p>
-    <p>Notifications will be sent to <span id="notification-email">{{ current_user.email }}</span></p>
-
+    {% if current_user.is_authenticated == True %}
+        <h4>Use this tool to add a notification to your account</h4>
+        <p>Once a job appears in the system that meets these criteria, you will be emailed a notification.</p>
+        <p>Notifications will be sent to <span id="notification-email">{{ current_user.email }}</span></p>    
+    {% else %}
+        <h4>** You must be <a href="{{ url_for('auth.login') }}">logged in</a> to add notifications to your account **</h4>
+    {% endif %}
 
     <form class="form" method="post" role="form" id="notification">
         {{ form.hidden_tag() }}
@@ -42,7 +44,6 @@
                 {{ wtf.form_field(form.submit) }}
             </div>
         </div>
-
     </form>
 
 

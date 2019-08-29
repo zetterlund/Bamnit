@@ -25,7 +25,7 @@ body {
 
 .chart-row {
 	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 }
 
 
@@ -53,6 +53,8 @@ h1.heading {
 
 .navbar-default {
 	background-color: #165683;
+	border: 0;
+	border-radius: 0;
 }
 
 .navbar-default .navbar-brand {
@@ -86,7 +88,7 @@ h1.heading {
 }
 
 .navbar-default a.logo {
-	line-height: 3.6em;
+	line-height: 3.4em;
 	margin-right: 15px;
 }
 
@@ -344,13 +346,50 @@ table.ntable {
 
 
 
+
+
+
+#graph-root #classes-filter {
+	text-align: center;
+}
+
+
+#graph-root #display-current-class {
+	text-align: center;
+	margin: 0px auto 30px auto;
+	padding-bottom: 15px;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+	width: 85%;
+}
+
+#graph-root #display-current-class .class-type {
+	font-size: 1.2em;
+	font-weight: 700;
+}
+
+#graph-root #display-current-class p {
+	margin-bottom: 5px;
+}
+
+#graph-root #display-current-class .course-count {
+
+}
+
+
+
+
 #graph-root ul.courses-list {
 	list-style: none;
-	padding-left: 20px;
+	padding-left: 0px;
 }
 
 #graph-root .list-item {
 
+}
+
+#graph-root .list-item.selected a {
+	font-weight: 700;
+	color: #003674;
 }
 
 #graph-root .list-item div {
@@ -359,11 +398,12 @@ table.ntable {
 }
 
 #graph-root .list-item a {
-	font-size: 1.3em;
+	font-size: 1.1em;
 	font-weight: 500;
 	line-height: normal;
 	display: inline-block;
 	vertical-align: middle;
+	cursor: pointer;
 }
 
 #graph-root .list-item span {
