@@ -3,7 +3,7 @@ from app import db
 from flask_login import current_user, login_required
 from app.models import User, Listing, Notification
 from app.notifications import notification_helper
-from app.analysis.analysis_helper import get_weekday_count, get_time_available, grade_list, get_daily_counts
+from app.analysis.analysis_helper import get_weekday_count, get_time_available, grade_list
 from werkzeug.urls import url_parse
 from datetime import datetime, time
 from flask_babel import _, get_locale
@@ -65,12 +65,6 @@ def about():
 def index():
     return render_template('explore.html',
                            heading="Explore")
-
-
-@bp.route('/get_course_counts', methods=['GET', 'POST'])
-def get_course_counts():
-    daily_counts = get_daily_counts()
-    return daily_counts
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])

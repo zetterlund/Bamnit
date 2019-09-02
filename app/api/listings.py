@@ -1,3 +1,4 @@
+from app.analysis.analysis_helper import get_daily_counts
 from app.api import bp
 from app.models import Listing
 from app.api.errors import bad_request
@@ -26,3 +27,9 @@ def get_fields():
 	with open('app/notifications/field_dict.txt') as f:
 		body = f.read()
 	return body
+
+
+@bp.route('/listings/get_course_counts', methods=['GET', 'POST'])
+def get_course_counts():
+    daily_counts = get_daily_counts()
+    return daily_counts
