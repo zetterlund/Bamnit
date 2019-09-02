@@ -61,13 +61,16 @@ def about():
                            heading="About")
 
 
-# @bp.route('/index', methods=['GET', 'POST'])
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    daily_counts = get_daily_counts()
     return render_template('explore.html',
-                           heading="Explore",
-                           daily_counts=daily_counts)
+                           heading="Explore")
+
+
+@bp.route('/get_course_counts', methods=['GET', 'POST'])
+def get_course_counts():
+    daily_counts = get_daily_counts()
+    return daily_counts
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -95,10 +98,10 @@ def remove_notification(notification_id):
         db.session.delete(notification)
         db.session.commit()
         flash('Notification \'{}\' deleted!'.format(notification.label))
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.dashboard'))
     else:
         flash('This is not your notification!')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.dashboard'))
 
 
 @bp.route('/notifications', methods=['GET', 'POST'])

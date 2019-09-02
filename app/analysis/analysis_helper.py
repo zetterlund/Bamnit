@@ -1,4 +1,4 @@
-import json
+from flask import json
 
 
 grade_list = [
@@ -36,4 +36,5 @@ def get_time_available():
 def get_daily_counts():
     with open('app/analysis/daily_counts.txt', 'r') as the_file:
         daily_counts = json.load(the_file)
+    daily_counts = json.jsonify(daily_counts)
     return daily_counts
