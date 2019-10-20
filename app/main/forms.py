@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, SelectMultipleField
+from wtforms import StringField, SubmitField, TextAreaField, SelectMultipleField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Length
 from app.models import User
 from flask import request, flash
@@ -7,7 +7,6 @@ from flask_babel import _, lazy_gettext as _l
 from flask_login import current_user
 
 from app.notifications import notification_helper
-
 
 
 class EditProfileForm(FlaskForm):
@@ -23,28 +22,6 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(username=self.username.data).first()
             if user is not None:
                 raise ValidationError('Please use a different username')
-
-
-
-# class IsUser(object):
-#     def __init__(self, min=-1, max=-1, message=None):
-#         pass
-#         # self.min = min
-#         # self.max = max
-#         # if not message:
-#         #     message = u'Field must be between %i and %i characters long.' % (min, max)
-#         # self.message = message
-
-#     def __call__(self, form, field):
-#         if 3 == 3:
-#             raise ValidationError('not a user!')
-#         # l = field.data and len(field.data) or 0
-#         # if l < self.min or self.max != -1 and l > self.max:
-#         #     raise ValidationError(self.message)
-
-
-
-
 
 
 class NotificationForm(FlaskForm):

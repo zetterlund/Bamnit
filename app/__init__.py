@@ -47,6 +47,9 @@ def create_app(config_class=Config):
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
+    from app.riotgames import bp as riotgames_bp
+    app.register_blueprint(riotgames_bp, url_prefix='/riot')
+
 
     if not app.debug and not app.testing:
         if app.config['MAIL_SERVER']:

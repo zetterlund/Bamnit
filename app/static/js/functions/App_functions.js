@@ -95,8 +95,6 @@ export function getClassTypeCounts() {
 
 
 
-
-
 // Function to load all the course data into the App component state
 export function loadCourseList(courseType) {
   const courseObject = (courseType == 'subject' ? subjectCounts : gradeCounts);

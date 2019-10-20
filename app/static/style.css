@@ -15,6 +15,10 @@ body {
 	letter-spacing: -.03em;
 }
 
+#main-container {
+	padding-bottom: 40px;
+}
+
 
 
 .bamnit-description {
@@ -52,7 +56,7 @@ h1.heading {
 
 
 .navbar-default {
-	background-color: #165683;
+	background-image: linear-gradient(180deg, #165683, #003e69);
 	border: 0;
 	border-radius: 0;
 }
@@ -64,6 +68,7 @@ h1.heading {
 .navbar-default .navbar-nav>li>a {
     color: #FFF;
     font-weight: 700;
+    letter-spacing: 0.03rem;
 }
 
 .navbar-default .navbar-nav>li>a:focus,
@@ -416,4 +421,133 @@ table.ntable {
 	vertical-align: middle;
 	min-width: 40px;
 	text-align: right;
+}
+
+#graph-root .expand-course-list {
+	margin: 10px 0 0 60px;
+}
+
+#graph-root .expand-course-list a {
+	cursor: pointer;
+	font-style: oblique;
+}
+
+
+
+
+
+
+
+#riot-games-root #error-box {
+	margin: 10px 0;
+}
+
+#riot-games-root #error-box span {
+	border: solid 1px #F00;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+
+#riot-games-root .team-label {
+	font-size: 1.1em;
+	font-weight: 700;
+	margin: 0 0 5px;
+}
+
+#riot-games-root .team-box {
+	padding: 10px 15px 10px 10px;
+	border-radius: 3px;
+	margin: 15px 0;
+}
+
+#riot-games-root .team-box select {
+	width: 100%;
+}
+
+#riot-games-root #team-1-box {
+	background-color: rgba(155,202,255,0.25);
+}
+
+#riot-games-root #team-2-box {
+	background-color: rgba(255,147,0,0.17);
+}
+
+
+#riot-games-root #prediction-box {
+	text-align: center;
+}
+
+#riot-games-root #prediction-box #prediction-label {
+
+}
+
+#riot-games-root #prediction-box .prediction-statement {
+    border-radius: 3px;
+    padding: 3px 6px;
+    font-size: 1.3em;
+}
+
+#riot-games-root #prediction-box #team1 {
+    background-color: rgba(155,202,255,0.2);
+}
+
+#riot-games-root #prediction-box #team2 {
+    background-color: rgba(255,147,0,0.15);	
+}
+
+#riot-games-root #prediction-box .prediction-statistic {
+	font-weight: 800;
+}
+
+
+#riot-games-root #loading-box {
+    width: 200px;
+    background-size: 180px 180px;
+    background-image: url(https://bamnit.com/static/images/loading.gif);
+    height: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0 auto;
+}
+
+#riot-games-root #loading-box p {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    margin: 0;
+}
+
+
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.col-xs-5ths {
+    width: 20%;
+    float: left;
+}
+@media (min-width: 768px) {
+    .col-sm-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
+    }
 }
