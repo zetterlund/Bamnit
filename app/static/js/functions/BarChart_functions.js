@@ -3,11 +3,9 @@
 // Chart.js options
 export const chartOptions1 = {
   maintainAspectRatio: false,
-
   onResize: function(chart, size) {
     resizeChartHelper(chart, size);
   },
-
   tooltips: {
     yAlign: 'bottom',
     xAlign: 'center',
@@ -54,11 +52,15 @@ export const chartOptions1 = {
   scales: {
     yAxes: [{
       id: "bar-y-axis1",
+      gridLines: {
+        drawTicks: false,
+      },
       stacked: false,
       type: 'linear',
       ticks: {
         beginAtZero: true,
         min: 0,
+        padding: 10,
         stepSize: (function(){
           if (window.innerWidth < 768) {
             return 30;
@@ -74,91 +76,36 @@ export const chartOptions1 = {
       }
     }],
     xAxes: [{
-
       afterTickToLabelConversion: function(data) {
         var xLabels = data.ticks;
-
         var factor;
-        if (window.innerWidth < 768) {
+        if (window.innerWidth < 992) {
           factor = 7;
-        } else if (window.innerWidth < 992) {
-          factor = 2;
         } else {
           factor = 1;
         }
-
-
-
-        // xLabels.forEach(function (label, i) {
-        //   if (factor == 1) {
-
-        //     var d = new Date(label);
-        //     xLabels[i] = d.toLocaleDateString('en-US', {
-        //       day: 'numeric',
-        //       month: 'short'
-        //     });
-
-        //   } else if (factor == 2) {
-
-        //     var d = new Date(label);
-        //     xLabels[i] = d.toLocaleDateString('en-US', {
-        //       day: 'numeric',
-        //       month: 'short'
-        //     });     
-        //     if (i % factor != 0) {
-        //         xLabels[i] = '';
-        //     }            
-
-        //   } else if (factor == 7) {
-
-        //     var d = new Date(label);
-        //     if (d.getDay() == 1) {
-        //       xLabels[i] = d.toLocaleDateString('en-US', {
-        //         day: 'numeric',
-        //         month: 'short'
-        //       });
-        //     } else {
-        //       xLabels[i] = '';
-        //     }
-
-        //   }
-
-
-
-
-        });
-
-
-
-
-        xLabels.forEach(function (labels, i) {
-
-          if (i % factor != 0) {
+        xLabels.forEach(function (label, i) {
+          if (factor == 1) {
+            xLabels[i] = getDateString(label);
+          } else if (factor == 7) {
+            var date = new Date(label);
+            if (date.getUTCDay() == 1) {
+              xLabels[i] = getDateString(label);
+            } else {
               xLabels[i] = '';
+            }
           }
         });
       },
-
       id: "bar-x-axis1",
       stacked: true,
       categoryPercentage: 1,
       barPercentage: 1,
       barThickness: 'flex',
-      gridLines: {
-        display: true,
-        color: (function(){
-          var colors = new Array(36).fill('#E5E5E5');
-          colors[colors.length - 7] = 'rgba(0,62,105,0.7)';
-          return colors;
-        })(),
-        lineWidth: (function(){
-          var lines = new Array(36).fill(1);
-          lines[lines.length - 7] = 2;
-          return lines;
-        })(),
-      },
+      gridLines: getXGridLines(),
       ticks: {
         autoSkip: false,
+        padding: 10,
       }
     }, {
       id: "bar-x-axis2",
@@ -184,12 +131,56 @@ export const chartOptions1 = {
 
 
 
+function getXGridLines() {
+  var utcDate = new Date().getUTCDate();
+  var today = new Date().getDate();
+  var lookback;
+  if (utcDate == today) {
+    lookback = 7;
+  } else {
+    lookback = 8;
+  }
+
+  var result = {}
+
+  result['display'] = true;
+  result['drawTicks'] = false;
+
+  result['color'] = (function() {
+    var colors = new Array(36).fill('#E5E5E5');
+    colors[colors.length - lookback] = 'rgba(0,62,105,0.7)';
+    return colors;
+  })();
+
+  result['lineWidth'] = (function() {
+    var lines = new Array(36).fill(1);
+    lines[lines.length - lookback] = 2;
+    return lines;
+  })();
+
+  return result;
+}
+
+
+
+function getDateString(date) {
+  var monthList = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+  var dateString = '';
+  date = new Date(date);
+  dateString += monthList[date.getUTCMonth()];
+  dateString += ' ';
+  dateString += date.getUTCDate();
+  return dateString;
+}
+
 
 
 // Function to help re-render more responsive Chart design
 function resizeChartHelper(chart, size) {
   var yStepSize;
-  if (window.innerWidth < 768) {
+  if (window.innerWidth < 576) {
+    yStepSize = 50;
+  } else if (window.innerWidth < 768) {
     yStepSize = 30;
   } else if (window.innerWidth < 992) {
     yStepSize = 20;
@@ -202,23 +193,16 @@ function resizeChartHelper(chart, size) {
 
 
 
-
-
-
 // Functions for colorizing the bars in the chart
 export function getDayRelation(someDate) {
   someDate = new Date(someDate);
-
-
-  // const today = new Date();
-
-  // var today = new Date(Date().toLocaleString('en-US', {
-  //     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
-  //   }));
+  someDate = new Date(
+    someDate.getUTCFullYear().toString() + '-' +
+    (someDate.getUTCMonth()+1).toString() + '-' +
+    someDate.getUTCDate().toString()
+  );
 
   var today = new Date();
-
-
 
   if (
     someDate.getUTCDate() == today.getDate() &&
@@ -232,6 +216,18 @@ export function getDayRelation(someDate) {
     return "beforeToday";
   }
 }
+
+
+
+// export function getTestDate(labels) {
+//   var result = [];
+//   for (var i=0; i<labels.length; i++) {
+//     result.push([labels[i], getDayRelation(labels[i])]);
+//   }
+//   return result;
+// }
+
+
 
 export function colorizeBars(labels) {
   const backgroundColor = [];
