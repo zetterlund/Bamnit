@@ -4,6 +4,34 @@ import {getClassTypeCounts, getData, loadCourseList} from './functions/App_funct
 
 
 
+
+
+
+function DateTest() {
+
+  var someDate = new Date('2019-12-07');
+  var today = new Date()
+
+  var isToday = false;
+
+  if (
+    someDate.getUTCDate() == today.getDate() &&
+    someDate.getUTCMonth() == today.getMonth() &&
+    someDate.getUTCFullYear() == today.getFullYear()
+  ) {
+    isToday = true;
+  }
+
+  return (
+    <div>
+      <p>Is today? {isToday.toString()}</p>
+    </div>
+  );
+
+}
+
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -38,12 +66,17 @@ class App extends React.Component {
                 <BarChart
                   data={this.state.data}
                   classType={this.state.classType}
-                  height="500"
+                  // height="500"
                 />
               </div>
             </div>
           </div>
         </div>
+
+        <div>
+          <DateTest />
+        </div>
+
         <DynamicSearch
           classTypeCounts={this.state.classTypeCounts}
           currentClassType={this.state.classType}
