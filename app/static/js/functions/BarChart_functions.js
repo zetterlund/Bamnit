@@ -24,9 +24,6 @@ export const chartOptions1 = {
     yPadding: 10,
     borderColor: "rgba(0, 0, 0, 0.6)",
     borderWidth: 2,
-    // filter: function (tooltipItem) {
-    //   return tooltipItem.datasetIndex === 0;
-    // },    
     callbacks: {
       title: function(tooltipItem) {
         return;
@@ -142,16 +139,13 @@ function getXGridLines() {
   }
 
   var result = {}
-
   result['display'] = true;
   result['drawTicks'] = false;
-
   result['color'] = (function() {
     var colors = new Array(36).fill('#E5E5E5');
     colors[colors.length - lookback] = 'rgba(0,62,105,0.7)';
     return colors;
   })();
-
   result['lineWidth'] = (function() {
     var lines = new Array(36).fill(1);
     lines[lines.length - lookback] = 2;
@@ -219,16 +213,6 @@ export function getDayRelation(someDate) {
 
 
 
-// export function getTestDate(labels) {
-//   var result = [];
-//   for (var i=0; i<labels.length; i++) {
-//     result.push([labels[i], getDayRelation(labels[i])]);
-//   }
-//   return result;
-// }
-
-
-
 export function colorizeBars(labels) {
   const backgroundColor = [];
   const hoverBackgroundColor = [];
@@ -238,15 +222,7 @@ export function colorizeBars(labels) {
       case "today":
         backgroundColor.push("rgba(67,137,187,0.45)");
         hoverBackgroundColor.push("rgba(67,137,187,0.32)");
-        borderWidth.push(
-          0
-        // {
-        //   top: 0,
-        //   right: 2,
-        //   bottom: 0,
-        //   left: 0
-        // }
-        );        
+        borderWidth.push(0);        
         break;
       case "afterToday":
         backgroundColor.push("rgba(67,137,187,0.25)");
@@ -268,4 +244,3 @@ export function colorizeBars(labels) {
   };
   return colorizedBars;
 }
-

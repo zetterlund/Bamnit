@@ -29,12 +29,9 @@ export class BarChart extends React.Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
-
     this.state = {
       'colorizedBars': colorizeBars(this.props.data.labels),
-      // 'chartHeight': setChartHeight(),
     };
-    // this.updateHeight = this.updateHeight.bind(this);
   }
 
   componentDidUpdate() {
@@ -42,24 +39,8 @@ export class BarChart extends React.Component {
     this.myChart.data.datasets[1].data = this.props.data.totalValues;
     this.myChart.data.datasets[0].data = this.props.data.jobValues;
     this.myChart.data.classType = this.props.classType;
-    // this.myChart.data.datasets[1].backgroundColor = this.props.backgroundColor;
-
-    // this.state.chartHeight = setChartHeight();
-
     this.myChart.update();
   }
-
-
- // updateDimensions() {
- //    if(window.innerWidth < 500) {
- //      this.setState({ width: 450, height: 102 });
- //    } else {
- //      let update_width  = window.innerWidth-100;
- //      let update_height = Math.round(update_width/4.4);
- //      this.setState({ width: update_width, height: update_height });
- //    }
- //  }
-
 
   componentDidMount() {
     this.myChart = new Chart(this.canvasRef.current, {
@@ -88,17 +69,14 @@ export class BarChart extends React.Component {
           xAxisID: "bar-x-axis1",
           // yAxisID: "bar-y-axis1",
           spanGaps: false,
-          // stack: 1
         }]
       },
-      // borderWidth: 2,
     });      
   }
 
   render() {
     return (
       <canvas id="myCanvas" ref={this.canvasRef}
-      // height={this.state.chartHeight}
       />
     );
   }
