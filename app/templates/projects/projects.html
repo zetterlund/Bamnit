@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+
+    <div id="project-page">
+
+        <div class="row heading">
+            <div class="col-xs-12">
+                <h1 class="heading">{{ heading }}</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="{{ url_for('main.about') }}"><div class="project-logo" id="bamnit" alt="Bamnit"></div></a>
+                <p>The one that started it all!  Bamnit is built on Flask and regularly runs a scraping script to grab newly-opened substitute teaching jobs.  Users can easily create a free account and specify exactly what kind of job they are looking for, and then receive an email notification immediately when that job type becomes available.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="{{ url_for('projects.chained_words') }}"><div class="project-logo" id="chainedwords" alt="Chained Words"></div></a>
+                <p>A little toy I built to answer the question: "What is the longest single word we can create by combining existing words?"  (For example, "sirated" = "sir" + "irate" + "rated")</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="{{ url_for('projects.match_predictor') }}"><div class="project-logo" id="arammatchpredictor" alt="ARAM Match Predictor"></div></a>
+                <p>Who will win?!  This app employs Machine Learning to predict which team will win a League of Legends computer game match.  The predictive model was generated using Keras over TensorFlow, using data scraped from over 100,000 matches.</p>
+            </div>
+        </div>    
+
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="https://bamnit.com/braingame"><div class="project-logo" id="braingame" alt="Brain Game"></div></a>
+                <p>An interactive, mobile-controlled "Brain Bowl" trivia competition for teachers to use in the classroom.  Brain Game is built on the MERN stack (MongoDB, Express, React, Node.js) and uses Socket.io for instantaneous server-client communication.</p>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
